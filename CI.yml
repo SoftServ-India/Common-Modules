@@ -1,5 +1,8 @@
 # CI-CD to generate the APK file for Flutter project
 # Android
+# create folder as follow
+# add folder with <.github> name and under the same folder create another folder <workflows>
+# then create a file <file.yml> and add below code in it.
 
 name: CI
 
