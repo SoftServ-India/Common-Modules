@@ -3,12 +3,14 @@
 # create folder as follow
 # add folder with <.github> name and under the same folder create another folder <workflows>
 # then create a file <file.yml> and add below code in it.
+# Email function added below
+
 
 name: CI
 
 on:
   push:
-    branches: [ "dev" ]
+    branches: [ "sanwal" ]
 
 jobs:
   flutter_test:
@@ -23,7 +25,7 @@ jobs:
         with:
           channel: "stable"
       - run: flutter pub get
-      - run: flutter build apk
+      - run: flutter build apk --release
       - name: Push to Release
         uses: ncipollo/release-action@v1
         with:
@@ -31,5 +33,19 @@ jobs:
           tag: v0.1.${{ github.run_number}}
           token: ${{ secrets.TOKEN}}
 
+      - name: Send mail
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: <Gmail ID>
+          password: <Gmail Password>
+          subject: Github Actions job result
+          body: Build job of ${{github.repository}} completed successfully!
+          to: <email@gmail.com, email2@gmail.com>
+          from: github-actions
+          attachments: "build/app/outputs/flutter-apk/app-release.apk"
+          priority: high
 
-
+      - name: Checkout code
+        uses: actions/checkout@v2
